@@ -1,0 +1,553 @@
+{
+  "info": {
+    "_postman_id": "a-raice-api-v2-collection",
+    "name": "A-RAICE Mobile & Web API",
+    "description": "Complete API documentation and request collection for A-RAICE Android App & Web Dashboard integration.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://10.0.2.2:8000/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register Farmer",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Juan Dela Cruz\",\n  \"email\": \"juan@farmer.test\",\n  \"password\": \"Password123!\",\n  \"password_confirmation\": \"Password123!\",\n  \"barangay\": \"Tuyo\",\n  \"municipality\": \"balanga\",\n  \"contact_number\": \"09171234567\",\n  \"farm_lat\": 14.6760,\n  \"farm_long\": 120.5360\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["register"]
+            },
+            "description": "Registers a new farmer account, verifies farm coordinates fall within chosen Bataan municipality, and returns auth token."
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"api-farmer@test.local\",\n  \"password\": \"password\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["login"]
+            },
+            "description": "Logs in user and returns Sanctum plainTextToken."
+          }
+        },
+        {
+          "name": "Firebase Auth Token Swap",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"api-farmer@test.local\",\n  \"firebase_uid\": \"firebase-user-uid\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/firebase",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "firebase"]
+            },
+            "description": "Swaps a Firebase login credential (or verified email) for a web Sanctum API token."
+          }
+        },
+        {
+          "name": "Get Authenticated User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/user",
+              "host": ["{{baseUrl}}"],
+              "path": ["user"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["logout"]
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"juan@farmer.test\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/forgot-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["forgot-password"]
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"reset-token-from-email\",\n  \"email\": \"juan@farmer.test\",\n  \"password\": \"NewPassword123!\",\n  \"password_confirmation\": \"NewPassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reset-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["reset-password"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Profile & Settings",
+      "item": [
+        {
+          "name": "Update Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "PATCH",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Juan Dela Cruz Jr.\",\n  \"contact_number\": \"09181234567\",\n  \"barangay\": \"Tuyo\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user",
+              "host": ["{{baseUrl}}"],
+              "path": ["user"]
+            }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "PUT",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"current_password\": \"Password123!\",\n  \"password\": \"BrandNewPass456!\",\n  \"password_confirmation\": \"BrandNewPass456!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/password",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "password"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Municipalities",
+      "item": [
+        {
+          "name": "List Valid Municipalities",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/municipalities",
+              "host": ["{{baseUrl}}"],
+              "path": ["municipalities"]
+            },
+            "description": "Returns all 12 Bataan municipalities with name, slug, and value."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Diseases & Treatments",
+      "item": [
+        {
+          "name": "List Diseases",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/diseases?search=",
+              "host": ["{{baseUrl}}"],
+              "path": ["diseases"],
+              "query": [{ "key": "search", "value": "" }]
+            }
+          }
+        },
+        {
+          "name": "Get Disease Detail",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/diseases/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["diseases", "1"]
+            },
+            "description": "Returns disease details including causes, symptoms, and ordered treatments."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scans",
+      "item": [
+        {
+          "name": "Submit Leaf Scan (Synced)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "image", "type": "file", "src": "" },
+                { "key": "gps_lat", "value": "14.6760", "type": "text" },
+                { "key": "gps_lng", "value": "120.5360", "type": "text" },
+                { "key": "farmer_id", "value": "1", "type": "text", "description": "Required only if logged in as Admin/LGU" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/scans",
+              "host": ["{{baseUrl}}"],
+              "path": ["scans"]
+            },
+            "description": "Submits leaf image to Laravel backend, executes classifier, saves to web database, triggers outbreak detection, and returns image URL, top-3 predictions, and treatments."
+          }
+        },
+        {
+          "name": "List Scans",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/scans?farmer_id=&municipality=&status=",
+              "host": ["{{baseUrl}}"],
+              "path": ["scans"],
+              "query": [
+                { "key": "farmer_id", "value": "" },
+                { "key": "municipality", "value": "" },
+                { "key": "status", "value": "" }
+              ]
+            },
+            "description": "Returns paginated list of scans. Farmers see their own scans; Admins and LGU staff see all scans with optional filtering."
+          }
+        },
+        {
+          "name": "Get Scan Detail",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/scans/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["scans", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Alerts & Outbreaks",
+      "item": [
+        {
+          "name": "List User Alerts",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/alerts?unread=false",
+              "host": ["{{baseUrl}}"],
+              "path": ["alerts"],
+              "query": [{ "key": "unread", "value": "false" }]
+            }
+          }
+        },
+        {
+          "name": "Mark Alert Read",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/alerts/1/read",
+              "host": ["{{baseUrl}}"],
+              "path": ["alerts", "1", "read"]
+            }
+          }
+        },
+        {
+          "name": "Broadcast Manual Alert",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Urgent: Weather advisory for Balanga rice farms\",\n  \"severity\": \"high\",\n  \"municipality\": \"balanga\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alerts/broadcast",
+              "host": ["{{baseUrl}}"],
+              "path": ["alerts", "broadcast"]
+            },
+            "description": "Admin or LGU staff can send a manual alert to a municipality or all farmers."
+          }
+        },
+        {
+          "name": "List Outbreaks (Admin / LGU)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/outbreaks?status=active",
+              "host": ["{{baseUrl}}"],
+              "path": ["outbreaks"],
+              "query": [{ "key": "status", "value": "active" }]
+            }
+          }
+        },
+        {
+          "name": "Close / Resolve Outbreak",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "PATCH",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/outbreaks/1/close",
+              "host": ["{{baseUrl}}"],
+              "path": ["outbreaks", "1", "close"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reports (Admin & LGU)",
+      "item": [
+        {
+          "name": "List Reports",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/reports",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports"]
+            }
+          }
+        },
+        {
+          "name": "Create Report",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"municipality\": \"balanga\",\n  \"range_start\": \"2026-01-01\",\n  \"range_end\": \"2026-01-31\",\n  \"disease_id\": null\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reports",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports"]
+            }
+          }
+        },
+        {
+          "name": "Get Report Detail",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/reports/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Push Notification Devices",
+      "item": [
+        {
+          "name": "Register FCM Device Token",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"fcm-device-registration-token-string\",\n  \"platform\": \"android\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/devices",
+              "host": ["{{baseUrl}}"],
+              "path": ["devices"]
+            }
+          }
+        },
+        {
+          "name": "Unregister FCM Device Token",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"fcm-device-registration-token-string\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/devices",
+              "host": ["{{baseUrl}}"],
+              "path": ["devices"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Map",
+      "item": [
+        {
+          "name": "Get Map Overview",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/map",
+              "host": ["{{baseUrl}}"],
+              "path": ["map"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

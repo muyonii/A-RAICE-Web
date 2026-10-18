@@ -1,0 +1,41 @@
+@import 'tailwindcss';
+
+html {
+    scrollbar-gutter: stable;
+}
+
+html:has(.landing) {
+    scrollbar-gutter: auto;
+}
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.vue';
+
+@plugin '@tailwindcss/forms';
+
+@layer base {
+    button:not(:disabled),
+    a[href],
+    [role='button'],
+    summary,
+    select,
+    label[for],
+    input[type='checkbox'],
+    input[type='radio'],
+    input[type='submit'],
+    input[type='file'] {
+        cursor: pointer;
+    }
+
+    :disabled {
+        cursor: not-allowed;
+    }
+}
+
+@theme {
+    --font-sans:
+        'DM Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji';
+}
